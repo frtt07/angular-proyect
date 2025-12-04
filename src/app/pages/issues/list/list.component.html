@@ -1,0 +1,60 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col"><h3 class="mb-0">Incidencias</h3></div>
+            <div class="col text-right">
+              <button class="btn btn-primary btn-sm" (click)="create()">
+                <i class="fas fa-plus"></i> Nueva Incidencia
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th>ID</th>
+                <th>Moto</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let issue of issues">
+                <td>{{ issue.id }}</td>
+                <td>{{ issue.motorcycle?.license_plate || issue.motorcycle_id }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getTypeBadge(issue.issue_type)">
+                    {{ getTypeText(issue.issue_type) }}
+                  </span>
+                </td>
+                <td>{{ issue.description | slice:0:30 }}{{ issue.description?.length > 30 ? '...' : '' }}</td>
+                <td>{{ issue.date_reported | date:'short' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getStatusBadge(issue.status)">
+                    {{ getStatusText(issue.status) }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-info btn-sm" (click)="view(issue.id)"><i class="fas fa-eye"></i></button>
+                  <button class="btn btn-warning btn-sm" (click)="update(issue.id)"><i class="fas fa-edit"></i></button>
+                  <button class="btn btn-danger btn-sm" (click)="delete(issue.id)"><i class="fas fa-trash"></i></button>
+                </td>
+              </tr>
+              <tr *ngIf="issues.length === 0">
+                <td colspan="7" class="text-center">No hay incidencias registradas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -11,13 +11,24 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/dashboard', title: 'Dashboard',  icon: 'ni-tv-2 text-primary', class: '' },
-    { path: '/icons', title: 'Icons',  icon:'ni-planet text-blue', class: '' },
-    { path: '/maps', title: 'Maps',  icon:'ni-pin-3 text-orange', class: '' },
-    { path: '/user-profile', title: 'User profile',  icon:'ni-single-02 text-yellow', class: '' },
-    { path: '/tables', title: 'Tables',  icon:'ni-bullet-list-67 text-red', class: '' },
-    { path: '/login', title: 'Login',  icon:'ni-key-25 text-info', class: '' },
-    { path: '/register', title: 'Register',  icon:'ni-circle-08 text-pink', class: '' }
+    { path: '/dashboard', title: 'Dashboard', icon: 'ni-tv-2 text-primary', class: '' },
+    { path: '/orders/list', title: 'Pedidos', icon: 'ni-cart text-orange', class: '' },
+    { path: '/shifts/list', title: 'Turnos', icon: 'ni-calendar-grid-58 text-info', class: '' },
+    
+    // Catálogos
+    { path: '/products/list', title: 'Productos', icon: 'ni-box-2 text-yellow', class: '' },
+    { path: '/restaurants/list', title: 'Restaurantes', icon: 'ni-shop text-red', class: '' },
+    { path: '/menus/list', title: 'Menús', icon: 'ni-bullet-list-67 text-pink', class: '' },
+    
+    // Personal y Vehículos
+    { path: '/customers/list', title: 'Clientes', icon: 'ni-single-02 text-blue', class: '' },
+    { path: '/drivers/list', title: 'Conductores', icon: 'ni-badge text-green', class: '' },
+    { path: '/motorcycles/list', title: 'Motos', icon: 'ni-delivery-fast text-purple', class: '' },
+    
+    // Soporte
+    { path: '/addresses/list', title: 'Direcciones', icon: 'ni-pin-3 text-cyan', class: '' },
+    { path: '/issues/list', title: 'Incidencias', icon: 'ni-notification-70 text-danger', class: '' },
+    { path: '/photos/list', title: 'Fotos', icon: 'ni-image text-gray', class: '' },
 ];
 
 @Component({

@@ -1,0 +1,103 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Moto</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Moto</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Moto</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="license_plate">Placa *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="license_plate" 
+                    formControlName="license_plate"
+                    [readonly]="mode === 1">
+                  <div *ngIf="fg.license_plate.errors && (fg.license_plate.dirty || fg.license_plate.touched || trySend)">
+                    <span class="text-danger" *ngIf="fg.license_plate.errors.required">La placa es requerida</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="brand">Marca *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="brand" 
+                    formControlName="brand"
+                    [readonly]="mode === 1">
+                  <div *ngIf="fg.brand.errors && (fg.brand.dirty || fg.brand.touched || trySend)">
+                    <span class="text-danger" *ngIf="fg.brand.errors.required">La marca es requerida</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="year">Año *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="year" 
+                    formControlName="year"
+                    [readonly]="mode === 1">
+                  <div *ngIf="fg.year.errors && (fg.year.dirty || fg.year.touched || trySend)">
+                    <span class="text-danger" *ngIf="fg.year.errors.required">El año es requerido</span>
+                    <span class="text-danger" *ngIf="fg.year.errors.min">Año mínimo: 1990</span>
+                    <span class="text-danger" *ngIf="fg.year.errors.max">Año máximo: 2030</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="status">Estado *</label>
+                  <select 
+                    class="form-control" 
+                    id="status" 
+                    formControlName="status"
+                    [attr.disabled]="mode === 1 ? true : null">
+                    <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">
+                  Regresar
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-success" 
+                  *ngIf="mode === 2" 
+                  (click)="create()">
+                  Crear
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-warning" 
+                  *ngIf="mode === 3" 
+                  (click)="update()">
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

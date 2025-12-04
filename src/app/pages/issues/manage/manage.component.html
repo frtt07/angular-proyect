@@ -1,0 +1,71 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Incidencia</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Incidencia</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Incidencia</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Moto *</label>
+                  <select class="form-control" formControlName="motorcycle_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let m of motorcycles" [value]="m.id">{{ m.license_plate }} - {{ m.brand }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.motorcycle_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Tipo de Incidencia *</label>
+                  <select class="form-control" formControlName="issue_type" [attr.disabled]="mode === 1 ? true : null">
+                    <option *ngFor="let t of issueTypes" [value]="t.value">{{ t.label }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Fecha Reportada *</label>
+                  <input type="datetime-local" class="form-control" formControlName="date_reported" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.date_reported.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Estado *</label>
+                  <select class="form-control" formControlName="status" [attr.disabled]="mode === 1 ? true : null">
+                    <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Descripción *</label>
+                  <textarea class="form-control" formControlName="description" rows="4" [readonly]="mode === 1"></textarea>
+                  <span class="text-danger" *ngIf="fg.description.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

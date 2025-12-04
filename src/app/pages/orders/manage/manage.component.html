@@ -1,0 +1,82 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Pedido</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Pedido</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Pedido</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Cliente *</label>
+                  <select class="form-control" formControlName="customer_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let c of customers" [value]="c.id">{{ c.name }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.customer_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Menú *</label>
+                  <select class="form-control" formControlName="menu_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let m of menus" [value]="m.id">{{ m.product?.name }} - {{ m.restaurant?.name }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.menu_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Moto (opcional)</label>
+                  <select class="form-control" formControlName="motorcycle_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Sin asignar</option>
+                    <option *ngFor="let m of motorcycles" [value]="m.id">{{ m.license_plate }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Cantidad *</label>
+                  <input type="number" class="form-control" formControlName="quantity" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.quantity.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Total *</label>
+                  <input type="number" class="form-control" formControlName="total_price" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.total_price.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Estado *</label>
+                  <select class="form-control" formControlName="status" [attr.disabled]="mode === 1 ? true : null">
+                    <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

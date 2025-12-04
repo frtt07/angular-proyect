@@ -1,0 +1,65 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Menú</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Menú</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Menú</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Restaurante *</label>
+                  <select class="form-control" formControlName="restaurant_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let r of restaurants" [value]="r.id">{{ r.name }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.restaurant_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Producto *</label>
+                  <select class="form-control" formControlName="product_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let p of products" [value]="p.id">{{ p.name }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.product_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Precio *</label>
+                  <input type="number" class="form-control" formControlName="price" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.price.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Disponible</label>
+                  <select class="form-control" formControlName="availability" [attr.disabled]="mode === 1 ? true : null">
+                    <option [value]="true">Sí</option>
+                    <option [value]="false">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

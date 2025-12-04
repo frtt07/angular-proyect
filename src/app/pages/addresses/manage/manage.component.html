@@ -1,0 +1,75 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Dirección</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Dirección</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Dirección</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Pedido *</label>
+                  <select class="form-control" formControlName="order_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let o of orders" [value]="o.id">Pedido #{{ o.id }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.order_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Calle *</label>
+                  <input type="text" class="form-control" formControlName="street" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.street.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Ciudad *</label>
+                  <input type="text" class="form-control" formControlName="city" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.city.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Estado/Departamento *</label>
+                  <input type="text" class="form-control" formControlName="state" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.state.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Código Postal *</label>
+                  <input type="text" class="form-control" formControlName="postal_code" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.postal_code.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Información Adicional</label>
+                  <textarea class="form-control" formControlName="additional_info" rows="3" [readonly]="mode === 1"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

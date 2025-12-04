@@ -1,0 +1,99 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Producto</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Producto</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Producto</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="name">Nombre *</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="name" 
+                    formControlName="name"
+                    [readonly]="mode === 1">
+                  <div *ngIf="fg.name.errors && (fg.name.dirty || fg.name.touched || trySend)">
+                    <span class="text-danger" *ngIf="fg.name.errors.required">El nombre es requerido</span>
+                    <span class="text-danger" *ngIf="fg.name.errors.minlength">Mínimo 2 caracteres</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="category">Categoría</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="category" 
+                    formControlName="category"
+                    [readonly]="mode === 1">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="price">Precio *</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="price" 
+                    formControlName="price"
+                    [readonly]="mode === 1">
+                  <div *ngIf="fg.price.errors && (fg.price.dirty || fg.price.touched || trySend)">
+                    <span class="text-danger" *ngIf="fg.price.errors.required">El precio es requerido</span>
+                    <span class="text-danger" *ngIf="fg.price.errors.min">El precio debe ser mayor a 0</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="description">Descripción</label>
+                  <textarea 
+                    class="form-control" 
+                    id="description" 
+                    formControlName="description"
+                    rows="3"
+                    [readonly]="mode === 1"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">
+                  Regresar
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-success" 
+                  *ngIf="mode === 2" 
+                  (click)="create()">
+                  Crear
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-warning" 
+                  *ngIf="mode === 3" 
+                  (click)="update()">
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Foto</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Subir Foto</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Foto</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Incidencia *</label>
+                  <select class="form-control" formControlName="issue_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let i of issues" [value]="i.id">
+                      #{{ i.id }} - {{ i.description | slice:0:30 }}
+                    </option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.issue_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Fecha de captura</label>
+                  <input type="datetime-local" class="form-control" formControlName="taken_at" [readonly]="mode === 1">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Descripción</label>
+                  <textarea class="form-control" formControlName="caption" rows="3" [readonly]="mode === 1"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="mode === 2">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Imagen *</label>
+                  <input type="file" class="form-control-file" (change)="onFileSelected($event)" accept="image/*">
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="previewUrl">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Vista previa</label>
+                  <div>
+                    <img [src]="previewUrl" alt="Preview" style="max-width: 300px; max-height: 200px;" class="img-thumbnail">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Subir</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

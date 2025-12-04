@@ -1,0 +1,70 @@
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0" *ngIf="mode === 1">Ver Turno</h3>
+          <h3 class="mb-0" *ngIf="mode === 2">Crear Turno</h3>
+          <h3 class="mb-0" *ngIf="mode === 3">Actualizar Turno</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="theFormGroup">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Conductor *</label>
+                  <select class="form-control" formControlName="driver_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let d of drivers" [value]="d.id">{{ d.name }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.driver_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Moto *</label>
+                  <select class="form-control" formControlName="motorcycle_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione...</option>
+                    <option *ngFor="let m of motorcycles" [value]="m.id">{{ m.license_plate }} - {{ m.brand }}</option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.motorcycle_id.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Inicio *</label>
+                  <input type="datetime-local" class="form-control" formControlName="start_time" [readonly]="mode === 1">
+                  <span class="text-danger" *ngIf="fg.start_time.errors?.required && trySend">Requerido</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Fin</label>
+                  <input type="datetime-local" class="form-control" formControlName="end_time" [readonly]="mode === 1">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Estado *</label>
+                  <select class="form-control" formControlName="status" [attr.disabled]="mode === 1 ? true : null">
+                    <option *ngFor="let s of statuses" [value]="s.value">{{ s.label }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
