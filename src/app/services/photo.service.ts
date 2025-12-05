@@ -45,7 +45,15 @@ export class PhotoService {
   }
 
   // Obtener URL de imagen
-  getImageUrl(filename: string): string {
-    return `${environment.url_backend}/uploads/${filename}`;
-  }
+ getImageUrl(filename: string): string {
+  if (!filename) return '';
+
+  // Tomar solo el nombre del archivo
+  const cleanName = filename.replace(/.*[\\/]/, '').replace(/\\/g, '/');
+
+  return `${environment.url_backend}/uploads/${cleanName}`;
+}
+
+
+
 }

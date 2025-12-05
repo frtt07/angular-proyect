@@ -14,19 +14,32 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Incidencia *</label>
-                  <select class="form-control" formControlName="issue_id" [attr.disabled]="mode === 1 ? true : null">
+                  <select
+                    class="form-control"
+                    formControlName="issue_id"
+                    [attr.disabled]="mode === 1 ? true : null"
+                  >
                     <option value="">Seleccione...</option>
                     <option *ngFor="let i of issues" [value]="i.id">
-                      #{{ i.id }} - {{ i.description | slice:0:30 }}
+                      #{{ i.id }} - {{ i.description | slice : 0 : 30 }}
                     </option>
                   </select>
-                  <span class="text-danger" *ngIf="fg.issue_id.errors?.required && trySend">Requerido</span>
+                  <span
+                    class="text-danger"
+                    *ngIf="fg.issue_id.errors?.required && trySend"
+                    >Requerido</span
+                  >
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Fecha de captura</label>
-                  <input type="datetime-local" class="form-control" formControlName="taken_at" [readonly]="mode === 1">
+                  <input
+                    type="datetime-local"
+                    class="form-control"
+                    formControlName="taken_at"
+                    [readonly]="mode === 1"
+                  />
                 </div>
               </div>
             </div>
@@ -34,7 +47,12 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Descripción</label>
-                  <textarea class="form-control" formControlName="caption" rows="3" [readonly]="mode === 1"></textarea>
+                  <textarea
+                    class="form-control"
+                    formControlName="caption"
+                    rows="3"
+                    [readonly]="mode === 1"
+                  ></textarea>
                 </div>
               </div>
             </div>
@@ -42,7 +60,25 @@
               <div class="col-md-12">
                 <div class="form-group">
                   <label>Imagen *</label>
-                  <input type="file" class="form-control-file" (change)="onFileSelected($event)" accept="image/*">
+                  <input
+                    type="file"
+                    class="form-control-file"
+                    (change)="onFileSelected($event)"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="mode === 3">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Cambiar imagen</label>
+                  <input
+                    type="file"
+                    class="form-control-file"
+                    (change)="onFileSelected($event)"
+                    accept="image/*"
+                  />
                 </div>
               </div>
             </div>
@@ -51,16 +87,41 @@
                 <div class="form-group">
                   <label>Vista previa</label>
                   <div>
-                    <img [src]="previewUrl" alt="Preview" style="max-width: 300px; max-height: 200px;" class="img-thumbnail">
+                    <img
+                      [src]="previewUrl"
+                      alt="Preview"
+                      style="max-width: 300px; max-height: 200px"
+                      class="img-thumbnail"
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
-                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Subir</button>
-                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="back()"
+                >
+                  Regresar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  *ngIf="mode === 2"
+                  (click)="create()"
+                >
+                  Subir
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  *ngIf="mode === 3"
+                  (click)="update()"
+                >
+                  Actualizar
+                </button>
               </div>
             </div>
           </form>

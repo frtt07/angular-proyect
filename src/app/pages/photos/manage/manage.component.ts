@@ -110,24 +110,54 @@ export class ManageComponent implements OnInit {
   }
 
   update(): void {
-    this.trySend = true;
-    if (this.theFormGroup.invalid) {
-      Swal.fire('Error', 'Complete los campos requeridos.', 'error');
-      return;
-    }
-    
-    const photoData: Photo = {
-      ...this.theFormGroup.value,
-      id: this.photo.id,
-      image_url: this.photo.image_url
-    };
-    
-    this.photoService.update(photoData).subscribe({
-      next: () => {
-        Swal.fire('Actualizado', 'La foto ha sido actualizada.', 'success');
-        this.router.navigate(['/photos/list']);
-      },
-      error: () => Swal.fire('Error', 'No se pudo actualizar.', 'error')
-    });
+  this.trySend = true;
+
+  if (this.theFormGroup.invalid) {
+    Swal.fire('Error', 'Complete los campos requeridos.', 'error');
+    return;
   }
+
+  const issueId = this.theFormGroup.get('issue_id')?.value;
+  const caption = this.theFormGroup.get('caption')?.value || '';
+
+  // Si el usuario seleccionó una nueva imagen → hacer upload
+  // Si el usuario seleccionó una nueva imagen → hacer upload (reemplazo)
+// Si el usuario seleccionó una nueva imagen → hacer upload y reemplazar
+if (this.selectedFile) {
+  this.photoService.upload(this.selectedFile, issueId, caption).subscribe({
+    next: (updatedPhoto) => {
+      Swal.fire(
+        'Actualizado',
+        'La imagen ha sido reemplazada correctamente.',
+        'success'
+      );
+      this.router.navigate(['/photos/list']);
+    },
+    error: (err) => {
+      console.error(err);
+      Swal.fire('Error', 'No se pudo actualizar la imagen.', 'error');
+    }
+  });
+
+  return; // <-- Muy importante: evita continuar con el update normal
+}
+
+
+
+  // Si NO hay nueva imagen → actualizar solo datos
+  const photoData: Photo = {
+    ...this.theFormGroup.value,
+    id: this.photo.id,
+    image_url: this.photo.image_url
+  };
+
+  this.photoService.update(photoData).subscribe({
+    next: () => {
+      Swal.fire('Actualizado', 'La foto ha sido actualizada.', 'success');
+      this.router.navigate(['/photos/list']);
+    },
+    error: () => Swal.fire('Error', 'No se pudo actualizar.', 'error')
+  });
+}
+
 }

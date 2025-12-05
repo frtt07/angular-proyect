@@ -10,6 +10,8 @@
         </div>
         <div class="card-body">
           <form [formGroup]="theFormGroup">
+            
+            <!-- CLIENTE Y MENÚ -->
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -26,37 +28,72 @@
                   <label>Menú *</label>
                   <select class="form-control" formControlName="menu_id" [attr.disabled]="mode === 1 ? true : null">
                     <option value="">Seleccione...</option>
-                    <option *ngFor="let m of menus" [value]="m.id">{{ m.product?.name }} - {{ m.restaurant?.name }}</option>
+                    <option *ngFor="let m of menus" [value]="m.id">
+                      {{ m.product?.name }} - {{ m.restaurant?.name }} ({{ m.price | currency }})
+                    </option>
                   </select>
                   <span class="text-danger" *ngIf="fg.menu_id.errors?.required && trySend">Requerido</span>
                 </div>
               </div>
             </div>
+            
+            <!-- DIRECCIÓN DE ENTREGA (NUEVO) -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="font-weight-bold">
+                    Dirección de Entrega
+                  </label>
+                  <select class="form-control" formControlName="address_id" [attr.disabled]="mode === 1 ? true : null">
+                    <option value="">Seleccione una dirección de entrega...</option>
+                    <option *ngFor="let addr of addresses" [value]="addr.id">
+                      <i class="fas fa-map-marker-alt"></i>
+                      {{ addr.street }}, {{ addr.city }}, {{ addr.state }} ({{ addr.postal_code }})
+                      <span *ngIf="addr.additional_info"> - {{ addr.additional_info }}</span>
+                    </option>
+                  </select>
+                  <span class="text-danger" *ngIf="fg.address_id.errors?.required && trySend">
+                    <i class="fas fa-exclamation-circle"></i> La dirección de entrega es obligatoria
+                  </span>
+                  <small class="form-text text-muted">
+                    Seleccione la dirección exacta donde se entregará el pedido. Si no existe, créela primero en el módulo de Direcciones.
+                  </small>
+                </div>
+              </div>
+            </div>
+            
+            <!-- MOTO, CANTIDAD Y PRECIO -->
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Moto (opcional)</label>
                   <select class="form-control" formControlName="motorcycle_id" [attr.disabled]="mode === 1 ? true : null">
                     <option value="">Sin asignar</option>
-                    <option *ngFor="let m of motorcycles" [value]="m.id">{{ m.license_plate }}</option>
+                    <option *ngFor="let m of motorcycles" [value]="m.id">
+                      {{ m.license_plate }} - {{ m.brand }}
+                    </option>
                   </select>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Cantidad *</label>
-                  <input type="number" class="form-control" formControlName="quantity" [readonly]="mode === 1">
+                  <input type="number" class="form-control" formControlName="quantity" [readonly]="mode === 1" min="1">
                   <span class="text-danger" *ngIf="fg.quantity.errors?.required && trySend">Requerido</span>
+                  <span class="text-danger" *ngIf="fg.quantity.errors?.min && trySend">Mínimo 1</span>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Total *</label>
-                  <input type="number" class="form-control" formControlName="total_price" [readonly]="mode === 1">
+                  <input type="number" class="form-control" formControlName="total_price" [readonly]="mode === 1" min="0" step="0.01">
                   <span class="text-danger" *ngIf="fg.total_price.errors?.required && trySend">Requerido</span>
+                  <span class="text-danger" *ngIf="fg.total_price.errors?.min && trySend">Mínimo 0</span>
                 </div>
               </div>
             </div>
+            
+            <!-- ESTADO -->
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
@@ -67,11 +104,19 @@
                 </div>
               </div>
             </div>
+            
+            <!-- BOTONES -->
             <div class="row mt-4">
               <div class="col-md-12 text-right">
-                <button type="button" class="btn btn-secondary" (click)="back()">Regresar</button>
-                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">Crear</button>
-                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">Actualizar</button>
+                <button type="button" class="btn btn-secondary" (click)="back()">
+                    Regresar
+                </button>
+                <button type="button" class="btn btn-success" *ngIf="mode === 2" (click)="create()">
+                    Crear Pedido
+                </button>
+                <button type="button" class="btn btn-warning" *ngIf="mode === 3" (click)="update()">
+                    Actualizar Pedido
+                </button>
               </div>
             </div>
           </form>
