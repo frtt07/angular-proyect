@@ -1,1 +1,164 @@
-<p>map works!</p>
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6">
+          <h6 class="h2 text-white d-inline-block mb-0">Mapa de Entregas</h6>
+          <p class="text-white-50 mb-0">Seguimiento en tiempo real de las motos</p>
+        </div>
+        <div class="col-lg-6 text-right">
+          <button class="btn btn-neutral btn-sm" (click)="back()">
+            <i class="fas fa-arrow-left"></i> Volver a Pedidos
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="row">
+    <!-- Panel del Mapa -->
+    <div class="col-xl-8">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row align-items-center">
+            <div class="col">
+              <h3 class="mb-0">
+                <i class="fas fa-map-marked-alt text-primary"></i> Ubicación de Motos
+              </h3>
+            </div>
+            <div class="col-auto">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="autoRefresh" 
+                       [checked]="autoRefresh" (change)="toggleAutoRefresh()">
+                <label class="custom-control-label" for="autoRefresh">
+                  Auto-actualizar ({{refreshInterval}}s)
+                </label>
+              </div>
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-primary btn-sm" (click)="refreshLocations()" [disabled]="isLoading">
+                <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i> Actualizar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <!-- Mapa -->
+          <div id="map" style="height: 500px; width: 100%;"></div>
+        </div>
+        <div class="card-footer">
+          <!-- Leyenda -->
+          <div class="d-flex justify-content-around flex-wrap">
+            <span class="mx-2">
+              <i class="fas fa-circle text-success"></i> Disponible
+            </span>
+            <span class="mx-2">
+              <i class="fas fa-circle text-info"></i> En uso
+            </span>
+            <span class="mx-2">
+              <i class="fas fa-circle text-warning"></i> Entregando
+            </span>
+            <span class="mx-2">
+              <i class="fas fa-circle text-danger"></i> Mantenimiento
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel lateral - Lista de Motos -->
+    <div class="col-xl-4">
+      <!-- Moto seleccionada -->
+      <div class="card shadow mb-4" *ngIf="selectedMotorcycle">
+        <div class="card-header bg-gradient-primary">
+          <h5 class="text-white mb-0">
+            <i class="fas fa-motorcycle"></i> {{selectedMotorcycle.license_plate}}
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <small class="text-muted">Estado</small>
+              <p>
+                <span class="badge" [ngClass]="getStatusBadgeClass(selectedMotorcycle.status)">
+                  {{getStatusText(selectedMotorcycle.status)}}
+                </span>
+              </p>
+            </div>
+            <div class="col-6">
+              <small class="text-muted">Pedido</small>
+              <p>
+                <a *ngIf="selectedMotorcycle.order_id" href="javascript:void(0)" 
+                   (click)="viewOrder(selectedMotorcycle.order_id)">
+                  #{{selectedMotorcycle.order_id}}
+                </a>
+                <span *ngIf="!selectedMotorcycle.order_id">-</span>
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <small class="text-muted">Cliente</small>
+              <p>{{selectedMotorcycle.customer_name || '-'}}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <small class="text-muted">Coordenadas</small>
+              <p class="mb-0">
+                <code>{{selectedMotorcycle.lat.toFixed(6)}}, {{selectedMotorcycle.lng.toFixed(6)}}</code>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de motos activas -->
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <h3 class="mb-0">
+            <i class="fas fa-list"></i> Motos Activas
+            <span class="badge badge-primary ml-2">{{motorcycleLocations.length}}</span>
+          </h3>
+        </div>
+        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+          <div *ngIf="isLoading" class="text-center py-4">
+            <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+            <p class="mt-2 text-muted">Cargando...</p>
+          </div>
+          
+          <ul class="list-group list-group-flush" *ngIf="!isLoading">
+            <li *ngFor="let moto of motorcycleLocations" 
+                class="list-group-item list-group-item-action"
+                [class.active]="selectedMotorcycle?.id === moto.id"
+                (click)="centerOnMotorcycle(moto)"
+                style="cursor: pointer;">
+              <div class="d-flex align-items-center">
+                <div class="mr-3">
+                  <i class="fas fa-motorcycle fa-lg" 
+                     [style.color]="getStatusColor(moto.status)"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="mb-0">{{moto.license_plate}}</h6>
+                  <small class="text-muted" *ngIf="moto.order_id">
+                    Pedido #{{moto.order_id}}
+                  </small>
+                </div>
+                <div>
+                  <span class="badge" [ngClass]="getStatusBadgeClass(moto.status)">
+                    {{getStatusText(moto.status)}}
+                  </span>
+                </div>
+              </div>
+            </li>
+            <li *ngIf="motorcycleLocations.length === 0" class="list-group-item text-center text-muted">
+              No hay motos activas
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

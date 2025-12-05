@@ -1,0 +1,29 @@
+#map {
+  border-radius: 0;
+}
+
+.custom-marker {
+  background: transparent;
+  border: none;
+}
+
+.list-group-item.active {
+  background-color: #f6f9fc;
+  border-color: #e9ecef;
+  color: inherit;
+}
+
+.list-group-item:hover:not(.active) {
+  background-color: #f8f9fa;
+}
+
+:host ::ng-deep {
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+  }
+  
+  .leaflet-popup-content {
+    margin: 12px;
+  }
+}

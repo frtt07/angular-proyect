@@ -171,7 +171,7 @@ export class MapComponent implements OnInit, OnDestroy, AfterViewInit {
         const randomOffset = () => (Math.random() - 0.5) * 0.05;
         baseLocations.push({
           id: order.motorcycle_id,
-          license_plate: order.motorcycle.license_plate || `MOTO-${order.motorcycle_id}`,
+          license_plate: order.motorcycle?.license_plate || `MOTO-${order.motorcycle_id}`,
           lat: 5.0689 + randomOffset(),
           lng: -75.5174 + randomOffset(),
           order_id: order.id,

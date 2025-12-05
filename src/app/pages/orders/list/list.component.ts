@@ -25,6 +25,10 @@ export class ListComponent implements OnInit {
     });
   }
 
+  openMap(): void {
+    this.router.navigate(['/orders/map']);
+  }
+
   create(): void { this.router.navigate(['/orders/create']); }
   view(id: number): void { this.router.navigate(['/orders/view', id]); }
   update(id: number): void { this.router.navigate(['/orders/update', id]); }
