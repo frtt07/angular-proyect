@@ -8,30 +8,101 @@ import { TablesComponent } from '../../pages/tables/tables.component';
 import { AuthenticationGuard } from 'src/app/guards/authentication.guard';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'user-profile', component: UserProfileComponent },
-    { path: 'tables', component: TablesComponent },
-    { path: 'icons', component: IconsComponent },
-    { path: 'maps', component: MapsComponent },
-    {
-        path: '',
-        children: [
-            {
-                path: 'theaters',
-                canActivate: [AuthenticationGuard],
-                loadChildren: () => import('src/app/pages/theaters/theaters.module').then(m => m.TheatersModule)
-            }
-        ]
+    // ============================================================
+    // RUTAS PROTEGIDAS - Requieren AuthenticationGuard
+    // Si el usuario no tiene sesión, será redirigido a /login
+    // ============================================================
+
+    // Rutas con componentes directos
+    { 
+        path: 'dashboard', 
+        component: DashboardComponent,
+        canActivate: [AuthenticationGuard]
     },
-    { path: 'products', loadChildren: () => import('../../pages/products/products.module').then(m => m.ProductsModule) },
-    { path: 'customers', loadChildren: () => import('../../pages/customers/customers.module').then(m => m.CustomersModule) },
-    { path: 'restaurants', loadChildren: () => import('../../pages/restaurants/restaurants.module').then(m => m.RestaurantsModule) },
-    { path: 'menus', loadChildren: () => import('../../pages/menus/menus.module').then(m => m.MenusModule) },
-    { path: 'drivers', loadChildren: () => import('../../pages/drivers/drivers.module').then(m => m.DriversModule) },
-    { path: 'motorcycles', loadChildren: () => import('../../pages/motorcycles/motorcycles.module').then(m => m.MotorcyclesModule) },
-    { path: 'shifts', loadChildren: () => import('../../pages/shifts/shifts.module').then(m => m.ShiftsModule) },
-    { path: 'orders', loadChildren: () => import('../../pages/orders/orders.module').then(m => m.OrdersModule) },
-    { path: 'addresses', loadChildren: () => import('../../pages/addresses/addresses.module').then(m => m.AddressesModule) },
-    { path: 'issues', loadChildren: () => import('../../pages/issues/issues.module').then(m => m.IssuesModule) },
-    { path: 'photos', loadChildren: () => import('../../pages/photos/photos.module').then(m => m.PhotosModule) },
+    { 
+        path: 'user-profile', 
+        component: UserProfileComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    { 
+        path: 'tables', 
+        component: TablesComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    { 
+        path: 'icons', 
+        component: IconsComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    { 
+        path: 'maps', 
+        component: MapsComponent,
+        canActivate: [AuthenticationGuard]
+    },
+    
+    // ============================================================
+    // MÓDULOS LAZY-LOADED - CRUD de entidades
+    // Todos protegidos con AuthenticationGuard
+    // ============================================================
+    
+    { 
+        path: 'theaters',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('src/app/pages/theaters/theaters.module').then(m => m.TheatersModule)
+    },
+    { 
+        path: 'products',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/products/products.module').then(m => m.ProductsModule)
+    },
+    { 
+        path: 'customers',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/customers/customers.module').then(m => m.CustomersModule)
+    },
+    { 
+        path: 'restaurants',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/restaurants/restaurants.module').then(m => m.RestaurantsModule)
+    },
+    { 
+        path: 'menus',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/menus/menus.module').then(m => m.MenusModule)
+    },
+    { 
+        path: 'drivers',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/drivers/drivers.module').then(m => m.DriversModule)
+    },
+    { 
+        path: 'motorcycles',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/motorcycles/motorcycles.module').then(m => m.MotorcyclesModule)
+    },
+    { 
+        path: 'shifts',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/shifts/shifts.module').then(m => m.ShiftsModule)
+    },
+    { 
+        path: 'orders',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/orders/orders.module').then(m => m.OrdersModule)
+    },
+    { 
+        path: 'addresses',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/addresses/addresses.module').then(m => m.AddressesModule)
+    },
+    { 
+        path: 'issues',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/issues/issues.module').then(m => m.IssuesModule)
+    },
+    { 
+        path: 'photos',
+        canActivate: [AuthenticationGuard],
+        loadChildren: () => import('../../pages/photos/photos.module').then(m => m.PhotosModule)
+    },
 ];
